@@ -10,10 +10,15 @@ int main()
     unsigned int puntuacion=0;
     unsigned int cascadas=0;
     bool salir=false;
-    unsigned char **ptablero=NULL;
+    unsigned char *ptablero=NULL;
+    unsigned char *pcopia=NULL;
+    int bits=columna*3*filas;
+    int bytes=(bits+7)/8;
     //Variables
-    while(salir==true){
-
+    ptablero= new unsigned char[bytes];
+    while(salir==false){
+        cout<<filas<<"x"<<columna;
+        cout<<puntuacion;
     }
     return 0;
 }
