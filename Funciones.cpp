@@ -38,10 +38,10 @@ int lectura_t(int columnas, int filas, unsigned char *puntero)
             if(f_leida==0){
                 mover(i,j,puntero);
             }
-            if(f_leida==lectura_f(i+1,columnas,j,puntero)&&f_leida==lectura_f(i+2,columnas,j,puntero)&&f_leida==0){
+            if(f_leida==lectura_f(i+1,columnas,j,puntero)&&f_leida==lectura_f(i+2,columnas,j,puntero)&&f_leida!=0){
                 //vacio por ahora hasta que se haga del_elemento()
             }
-            if(f_leida==lectura_f(i,columnas,j+1,puntero)&&f_leida==lectura_f(i,columnas,j+2,puntero)&&f_leida==0){
+            if(f_leida==lectura_f(i,columnas,j+1,puntero)&&f_leida==lectura_f(i,columnas,j+2,puntero)&&f_leida!=0){
                 //Vacio por ahora
             }
         }
