@@ -33,17 +33,44 @@ int lectura_t(int columnas, int filas, unsigned char *puntero)
 {
     int f_leida=0;
     for(int i=0;i<filas;i++){
+        int combinacion_h=0;
+        int combinacion_v=0;
         for(int j=0;j<columnas;j++){
             f_leida=lectura_f(i,columnas,j,puntero);
             if(f_leida==0){
                 mover(i,j,puntero);
+                continue;
             }
-            if(f_leida==lectura_f(i+1,columnas,j,puntero)&&f_leida==lectura_f(i+2,columnas,j,puntero)&&f_leida!=0){
-                //vacio por ahora hasta que se haga del_elemento()
+            for(int t=i;t<filas;t++){
+                int f_fila=lectura_f(t,columnas,j,puntero);
+                if(f_fila==f_leida&&f_leida!=0){
+                    combinacion_v++;
+                }
+                else{
+                    break;
+                }
             }
-            if(f_leida==lectura_f(i,columnas,j+1,puntero)&&f_leida==lectura_f(i,columnas,j+2,puntero)&&f_leida!=0){
-                //Vacio por ahora
+            for(int l=j;l<columnas;l++){
+                int f_columna=lectura_f(i,columnas,l,puntero);
+                if(f_columna==f_leida&&f_leida!=0){
+                    combinacion_h++;
+                }
+                else{
+                    break;
+                }
             }
+            if(combinacion_v>=3){
+                for(int k=i;k<i+combinacion_v;k++){
+                    del_elemento(k,j,puntero);
+                }
+            }
+            combinacion_v=0;
+            if(combinacion_h>=3){
+                for(int u=j;u<j+combinacion_h;u++){
+                    del_elemento(i,u,puntero);
+                }
+            }
+            combinacion_h=0;
         }
     }
     return 0;
@@ -68,7 +95,7 @@ int del_columna()
 {
     return 0;
 }
-int del_elemento()
+int del_elemento(int fila, int columna, unsigned char *puntero)
 {
     return 0;
 }
