@@ -19,6 +19,7 @@ int main()
     ptablero= new unsigned char[bytes];
     for(int i=0;i<filas;++i){
         for(int j=0;j<columna;++j){
+            relleno(i,columna,j,ptablero);
             //Aqui va la funcion relleno
         }
     }
