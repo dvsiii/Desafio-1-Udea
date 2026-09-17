@@ -38,8 +38,13 @@ int lectura_t(int columnas, int filas, unsigned char *puntero)
         for(int j=0;j<columnas;j++){
             f_leida=lectura_f(i,columnas,j,puntero);
             if(f_leida==0){
-                mover(i,j,puntero);
-                continue;
+                if(i!=0){
+                    mover(i,columnas,j,puntero);
+                    continue;
+                }
+                else {
+                    relleno(i,columnas,j,puntero);
+                }
             }
             for(int t=i;t<filas;t++){
                 int f_fila=lectura_f(t,columnas,j,puntero);
@@ -61,13 +66,13 @@ int lectura_t(int columnas, int filas, unsigned char *puntero)
             }
             if(combinacion_v>=3){
                 for(int k=i;k<i+combinacion_v;k++){
-                    del_elemento(k,j,puntero);
+                    del_elemento(k,columnas,j,puntero);
                 }
             }
             combinacion_v=0;
             if(combinacion_h>=3){
                 for(int u=j;u<j+combinacion_h;u++){
-                    del_elemento(i,u,puntero);
+                    del_elemento(i,columnas,u,puntero);
                 }
             }
             combinacion_h=0;
@@ -75,8 +80,26 @@ int lectura_t(int columnas, int filas, unsigned char *puntero)
     }
     return 0;
 }
-int mover(int fila, int columna, unsigned char *puntero)
+int mover(int fila, int columnas, int columna, unsigned char *puntero)
 {
+    for(int i=fila;i>=0;i--){
+        if(i!=0){
+            int f_leida=lectura_f(i-1,columnas,columna,puntero);
+            int bit_relleno=(i*columnas+columna)*3;
+            int bit_inicio=bit_relleno/8;
+            int desplazo=bit_relleno%8;
+            int desborde=puntero[bit_inicio+1]<<8;
+            desborde=desborde|puntero[bit_inicio];
+            desborde=desborde&~(7<<desplazo);
+            desborde=desborde|f_leida<<desplazo;
+            puntero[bit_inicio]=desborde;
+            puntero[bit_inicio+1]=desborde>>8;
+        }
+        else{
+            del_elemento(i,columnas,columna,puntero);
+            relleno(i,columnas,columna,puntero);
+        }
+    }
     return 0;
 }
 int ag_fila()
@@ -95,7 +118,15 @@ int del_columna()
 {
     return 0;
 }
-int del_elemento(int fila, int columna, unsigned char *puntero)
+int del_elemento(int fila, int columnas, int columna, unsigned char *puntero)
 {
+    int bit_relleno=(fila*columnas+columna)*3;
+    int bit_inicio=bit_relleno/8;
+    int desplazo=bit_relleno%8;
+    int desborde=puntero[bit_inicio+1]<<8;
+    desborde=desborde|puntero[bit_inicio];
+    desborde=desborde&~(7<<desplazo);
+    puntero[bit_inicio]=desborde;
+    puntero[bit_inicio+1]=desborde>>8;
     return 0;
 }
