@@ -29,8 +29,8 @@ int main()
     //Inicio del tablero
     while(salir==false){
         limite_p=(bytes*8*65)/100;
-        cout<<filas<<"x"<<columnas;
-        cout<<puntuacion;
+        cout<<filas<<"x"<<columnas<<endl;
+        cout<<puntuacion<<endl;
         for(int i=0;i<filas;++i){
             for(int j=0;j<columnas;++j){
                 cout<<fichas[lectura_f(i,columnas,j,ptablero)];
@@ -52,7 +52,7 @@ int main()
             cout<<"ingrese la columna de la ficha que desea eliminar: ";
             cin>>columna;
                 del_elemento(fila,columnas,columna,ptablero);
-                relleno(fila,columnas,columna,ptablero);
+                lectura_t(columnas,filas,ptablero);
                 break;
         case 2: cout<<"Ingrese despues de que fila desea agregar las filas nuevas: ";
             cin>>fila;

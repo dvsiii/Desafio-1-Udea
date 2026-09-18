@@ -5,16 +5,8 @@ int relleno(int fila, int columnas, int columna, unsigned char *puntero)
     for(int i=0; i<columna+1;++i){
         k++;
     }
-    int bit_relleno=(fila*columnas+columna)*3;
-    int desplazo=bit_relleno%8;
-    int bit_inicio=bit_relleno/8;
     int valor=(fila+columna*k)%7;
-    valor=valor<<desplazo;
-    puntero[bit_inicio]=puntero[bit_inicio]|valor;
-    if(valor>>8!=0){
-        valor=valor>>8;
-        puntero[bit_inicio+1]=puntero[bit_inicio+1]|valor;
-    }
+    escribir_f(fila,columnas,columna,valor,puntero);
     return 0;
 }
 int lectura_f(unsigned int fila,unsigned int columnas,unsigned int columna, unsigned char *puntero)
@@ -227,13 +219,6 @@ int del_columna(int filas, int columnas, int columna_eliminda, unsigned char *pu
 }
 int del_elemento(int fila, int columnas, int columna, unsigned char *puntero)
 {
-    int bit_relleno=(fila*columnas+columna)*3;
-    int bit_inicio=bit_relleno/8;
-    int desplazo=bit_relleno%8;
-    int desborde=puntero[bit_inicio+1]<<8;
-    desborde=desborde|puntero[bit_inicio];
-    desborde=desborde&~(7<<desplazo);
-    puntero[bit_inicio]=desborde;
-    puntero[bit_inicio+1]=desborde>>8;
+    escribir_f(fila,columnas,columna,0,puntero);
     return 0;
 }
