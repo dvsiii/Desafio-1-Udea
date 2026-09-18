@@ -5,6 +5,7 @@ int main()
 {
     cout << "Bienvenido a Sweet Crush" << endl;
     //Introduccion
+    short unsigned int limite_p=0;
     short unsigned int desicion=0;
     short unsigned int filas=4;
     short unsigned int columnas=6;
@@ -26,6 +27,7 @@ int main()
         }
     }
     while(salir==false){
+        limite_p=(bytes*8*65)/100;
         cout<<filas<<"x"<<columnas;
         cout<<puntuacion;
         for(int i=0;i<filas;++i){
@@ -40,6 +42,7 @@ int main()
         cout<<"3. agregar una columna"<<endl;
         cout<<"4. eliminar una fila"<<endl;
         cout<<"5. eliminar una columna"<<endl;
+        cout<<"6. Salir"<<endl;
         cout<<"Ingrese el numero de la accio que desea hacer: ";
         cin>>desicion;
         switch(desicion){
@@ -47,20 +50,50 @@ int main()
             cin>>fila;
             cout<<"ingrese la columna de la ficha que desea eliminar: ";
             cin>>columna;
-            del_elemento(fila,columnas,columna,ptablero);
-            relleno(fila,columnas,columna,ptablero);
-            break;
-        case 2: cout<<"Ingrese la cantidad de filas que desea agregar: ";
-            cin>>fila;
-            cout<<"Ingrese despues de que fila desea agregar las filas nuevas: ";
+                del_elemento(fila,columnas,columna,ptablero);
+                relleno(fila,columnas,columna,ptablero);
+                break;
+        case 2: cout<<"Ingrese despues de que fila desea agregar las filas nuevas: ";
             cin>>columna;
-            filas=filas+fila;
+            filas++;
             bits=columnas*3*filas;
             bytes=(bits+7)/8;
             pcopia= new unsigned char[bytes];
-            ag_fila(filas,columnas,fila,columna,ptablero,pcopia);
+            ag_fila(filas,columnas,1,columna,ptablero,pcopia);
             delete[]ptablero;
-            ptablero=NULL;
+            ptablero=pcopia;
+            pcopia=NULL;
+            break;
+        case 3: cout<<"Ingresa despues de que columna desea agregar las columnas nuevas: ";
+            cin>>fila;
+            columnas++;
+            bits=columnas*3*filas;
+            bytes=(bits+7)/8;
+            pcopia=new unsigned char[bytes];
+            ag_columna(filas,columnas,1,fila,ptablero,pcopia);
+            delete[]ptablero;
+            ptablero=pcopia;
+            pcopia=NULL;
+            break;
+        case 4: cout<<"Ingresa que fila deseas eliminar: ";
+            cin>>fila;
+            filas=filas-1;
+            bits=columnas*3*filas;
+            bytes=(bits+7)/8;
+            if(bits<limite_p){
+                pcopia=new unsigned char[bytes];
+            }
+            else{
+
+            }
+            break;
+        case 5: cout<<"Ingresa que columna deseas eliminar: ";
+            cin>>columna;
+            columnas=columnas-1;
+            bits=columnas*3*filas;
+            bytes=(bits+7)/8;
+            break;
+        case 6: salir=true;
         }
     }
     return 0;
