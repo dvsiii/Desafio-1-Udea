@@ -55,23 +55,23 @@ int main()
                 relleno(fila,columnas,columna,ptablero);
                 break;
         case 2: cout<<"Ingrese despues de que fila desea agregar las filas nuevas: ";
-            cin>>columna;
+            cin>>fila;
             filas++;
             bits=columnas*3*filas;
             bytes=(bits+7)/8;
             pcopia= new unsigned char[bytes];
-            ag_fila(filas,columnas,1,columna,ptablero,pcopia);
+            ag_fila(filas,columnas,1,fila,ptablero,pcopia);
             delete[]ptablero;
             ptablero=pcopia;
             pcopia=NULL;
             break;
         case 3: cout<<"Ingresa despues de que columna desea agregar las columnas nuevas: ";
-            cin>>fila;
+            cin>>columna;
             columnas++;
             bits=columnas*3*filas;
             bytes=(bits+7)/8;
             pcopia=new unsigned char[bytes];
-            ag_columna(filas,columnas,fila,ptablero,pcopia);
+            ag_columna(filas,columnas,columna,ptablero,pcopia);
             delete[]ptablero;
             ptablero=pcopia;
             pcopia=NULL;
@@ -87,7 +87,6 @@ int main()
                 delete[]ptablero;
                 ptablero=pcopia;
                 pcopia=NULL;
-                break;
             }
             else{
                 del_fila(filas,columnas,fila,ptablero,pcopia,false);
@@ -98,6 +97,16 @@ int main()
             columnas=columnas-1;
             bits=columnas*3*filas;
             bytes=(bits+7)/8;
+            if(bits<limite_p){
+                pcopia=new unsigned char[bytes];
+                del_columna(filas,columnas,columna,ptablero,pcopia,true);
+                delete[]ptablero;
+                ptablero=pcopia;
+                pcopia=NULL;
+            }
+            else{
+                del_columna(filas,columnas,columna,ptablero,pcopia,false);
+            }
             break;
         case 6: salir=true;
             break;
