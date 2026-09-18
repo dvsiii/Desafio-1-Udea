@@ -102,8 +102,42 @@ int mover(int fila, int columnas, int columna, unsigned char *puntero)
     }
     return 0;
 }
-int ag_fila()
+int ag_fila(int filas, int columnas, int filas_agregadas, int apartir_de_fila, unsigned char *puntero, unsigned char *copia)
 {
+    for(int i=0;i<filas;i++){
+        for(int j=0;j<columnas;j++){
+            if(i<apartir_de_fila){
+                int f_leida=lectura_f(i,columnas,j,puntero);
+                int bit_relleno=(i*columnas+j)*3;
+                int bit_inicio=bit_relleno/8;
+                int desplazo=bit_relleno%8;
+                int desborde=copia[bit_inicio+1]<<8;
+                desborde=desborde|copia[bit_inicio];
+                desborde=desborde&~(7<<desplazo);
+                desborde=desborde|f_leida<<desplazo;
+                copia[bit_inicio]=desborde;
+                copia[bit_inicio+1]=desborde>>8;
+            }
+            else{
+                int fila_nueva=i;
+                int bit_relleno=(fila_nueva*columnas+j)*3;
+                int bit_inicio=bit_relleno/8;
+                int desplazo=bit_relleno%8;
+                int desborde=copia[bit_inicio+1]<<8;
+                if(fila_nueva<apartir_de_fila+filas_agregadas){
+                    relleno(fila_nueva,columnas,j,copia);
+                }
+                else{
+                    int f_leida=lectura_f(fila_nueva-filas_agregadas,columnas,j,puntero);
+                    desborde=desborde|copia[bit_inicio];
+                    desborde=desborde&~(7<<desplazo);
+                    desborde=desborde|f_leida<<desplazo;
+                    copia[bit_inicio]=desborde;
+                    copia[bit_inicio+1]=desborde>>8;
+                }
+            }
+        }
+    }
     return 0;
 }
 int ag_columna()
