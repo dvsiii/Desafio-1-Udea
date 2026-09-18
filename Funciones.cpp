@@ -144,8 +144,55 @@ int ag_columna()
 {
     return 0;
 }
-int del_fila()
+int del_fila(int filas, int columnas, int fila_eliminda, unsigned char *puntero, unsigned char *copia, bool limite)
 {
+    if(limite==true){
+        for(int i=0;i<filas;i++){
+            for(int j=0;j<columnas;j++){
+                if(i<fila_eliminda){
+                    int f_leida=lectura_f(i,columnas,j,puntero);
+                    int bit_relleno=(i*columnas+j)*3;
+                    int bit_inicio=bit_relleno/8;
+                    int desplazo=bit_relleno%8;
+                    int desborde=copia[bit_inicio+1]<<8;
+                    desborde=desborde|copia[bit_inicio];
+                    desborde=desborde&~(7<<desplazo);
+                    desborde=desborde|f_leida<<desplazo;
+                    copia[bit_inicio]=desborde;
+                    copia[bit_inicio+1]=desborde>>8;
+                }
+                else{
+                    int fila_del=i+1;
+                    int bit_relleno=(i*columnas+j)*3;
+                    int bit_inicio=bit_relleno/8;
+                    int desplazo=bit_relleno%8;
+                    int desborde=copia[bit_inicio+1]<<8;
+                    int f_leida=lectura_f(fila_del,columnas,j,puntero);
+                    desborde=desborde|copia[bit_inicio];
+                    desborde=desborde&~(7<<desplazo);
+                    desborde=desborde|f_leida<<desplazo;
+                    copia[bit_inicio]=desborde;
+                    copia[bit_inicio+1]=desborde>>8;
+                }
+            }
+        }
+    }
+    else{
+        for(int i=fila_eliminda;i<filas;i++){
+            for(int j=0;j<columnas;j++){
+                int f_leida=lectura_f(i+1,columnas,j,puntero);
+                int bit_relleno=((i)*columnas+j)*3;
+                int bit_inicio=bit_relleno/8;
+                int desplazo=bit_relleno%8;
+                int desborde=puntero[bit_inicio+1]<<8;
+                desborde=desborde|puntero[bit_inicio];
+                desborde=desborde&~(7<<desplazo);
+                desborde=desborde|f_leida<<desplazo;
+                puntero[bit_inicio]=desborde;
+                puntero[bit_inicio+1]=desborde>>8;
+            }
+        }
+    }
     return 0;
 }
 int del_columna()

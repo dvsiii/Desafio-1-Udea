@@ -26,6 +26,7 @@ int main()
             relleno(i,columnas,j,ptablero);
         }
     }
+    //Inicio del tablero
     while(salir==false){
         limite_p=(bytes*8*65)/100;
         cout<<filas<<"x"<<columnas;
@@ -82,9 +83,14 @@ int main()
             bytes=(bits+7)/8;
             if(bits<limite_p){
                 pcopia=new unsigned char[bytes];
+                del_fila(filas,columnas,fila,ptablero,pcopia,true);
+                delete[]ptablero;
+                ptablero=pcopia;
+                pcopia=NULL;
+                break;
             }
             else{
-
+                del_fila(filas,columnas,fila,ptablero,pcopia,false);
             }
             break;
         case 5: cout<<"Ingresa que columna deseas eliminar: ";
@@ -94,7 +100,10 @@ int main()
             bytes=(bits+7)/8;
             break;
         case 6: salir=true;
+            break;
         }
     }
+    delete[]ptablero;
+    ptablero=NULL;
     return 0;
 }
