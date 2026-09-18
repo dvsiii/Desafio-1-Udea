@@ -71,7 +71,7 @@ int main()
             bits=columnas*3*filas;
             bytes=(bits+7)/8;
             pcopia=new unsigned char[bytes];
-            ag_columna(filas,columnas,1,fila,ptablero,pcopia);
+            ag_columna(filas,columnas,fila,ptablero,pcopia);
             delete[]ptablero;
             ptablero=pcopia;
             pcopia=NULL;
