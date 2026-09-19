@@ -39,6 +39,14 @@ int main()
         cout<<"Se ha eliminado un total de: "<<eliminaciones_f+eliminacion_f<<" fichas"<<endl;
         for(int i=0;i<filas;++i){
             for(int j=0;j<columnas;++j){
+                for(int k=2;k>=0;--k){
+                    cout<<((lectura_f(i,columnas,j,ptablero)>> k)&1);
+                }
+            }
+            cout<<endl;
+        }
+        for(int i=0;i<filas;++i){
+            for(int j=0;j<columnas;++j){
                 cout<<fichas[lectura_f(i,columnas,j,ptablero)];
             }
             cout<<endl;
