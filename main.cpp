@@ -137,6 +137,8 @@ int main()
             break;
         case 6: salir=true;
             break;
+        default: cout<<"Usted ingreso un valor erroneo, intente denuevo"<<endl;
+            break;
         }
         eliminacion_f=del_elemento(-1,-1,-1,NULL);
     }
