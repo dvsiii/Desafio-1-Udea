@@ -13,8 +13,11 @@ int main()
     short unsigned int columna=0;
     unsigned int puntuacion=0;
     unsigned int cascadas=0;
+    unsigned int eliminacion_f=0;
+    unsigned int eliminaciones_f=0;
+    unsigned int user_el=0;
     bool salir=false;
-    char fichas[8]="ABCDEFQ";
+    char fichas[9]="0ABCDEFQ";
     unsigned char *ptablero=NULL;
     unsigned char *pcopia=NULL;
     int bits=columnas*3*filas;
@@ -28,9 +31,12 @@ int main()
     }
     //Inicio del tablero
     while(salir==false){
+        puntuacion=cascadas*10;
         limite_p=(bytes*8*65)/100;
-        cout<<filas<<"x"<<columnas<<endl;
-        cout<<puntuacion<<endl;
+        cout<<"La cantidad de filas y comunas es: "<<filas<<"x"<<columnas<<endl;
+        cout<<"Tu puntuacion: "<<puntuacion<<endl;
+        cout<<"Ested ha hecho "<<user_el<<" eliminaciones"<<endl;
+        cout<<"Se ha eliminado un total de: "<<eliminaciones_f+eliminacion_f<<" fichas"<<endl;
         for(int i=0;i<filas;++i){
             for(int j=0;j<columnas;++j){
                 cout<<fichas[lectura_f(i,columnas,j,ptablero)];
@@ -49,11 +55,14 @@ int main()
         switch(desicion){
         case 1: cout<<"Ingrese la fila de la ficha que desea eliminar: ";
             cin>>fila;
+            fila--;
             cout<<"ingrese la columna de la ficha que desea eliminar: ";
             cin>>columna;
-                del_elemento(fila,columnas,columna,ptablero);
-                lectura_t(columnas,filas,ptablero);
-                break;
+            columna--;
+            del_elemento(fila,columnas,columna,ptablero);
+            cascadas=lectura_t(columnas,filas,cascadas,ptablero);
+            user_el++;
+            break;
         case 2: cout<<"Ingrese despues de que fila desea agregar las filas nuevas: ";
             cin>>fila;
             filas++;
@@ -64,6 +73,7 @@ int main()
             delete[]ptablero;
             ptablero=pcopia;
             pcopia=NULL;
+            cascadas=lectura_t(columnas,filas,cascadas,ptablero);
             break;
         case 3: cout<<"Ingresa despues de que columna desea agregar las columnas nuevas: ";
             cin>>columna;
@@ -75,9 +85,11 @@ int main()
             delete[]ptablero;
             ptablero=pcopia;
             pcopia=NULL;
+            cascadas=lectura_t(columnas,filas,cascadas,ptablero);
             break;
         case 4: cout<<"Ingresa que fila deseas eliminar: ";
             cin>>fila;
+            fila--;
             filas=filas-1;
             bits=columnas*3*filas;
             bytes=(bits+7)/8;
@@ -91,9 +103,13 @@ int main()
             else{
                 del_fila(filas,columnas,fila,ptablero,pcopia,false);
             }
+            cascadas=lectura_t(columnas,filas,cascadas,ptablero);
+            user_el=user_el+columnas;
+            eliminaciones_f=eliminaciones_f+columnas;
             break;
         case 5: cout<<"Ingresa que columna deseas eliminar: ";
             cin>>columna;
+            columna--;
             columnas=columnas-1;
             bits=columnas*3*filas;
             bytes=(bits+7)/8;
@@ -107,12 +123,18 @@ int main()
             else{
                 del_columna(filas,columnas,columna,ptablero,pcopia,false);
             }
+            cascadas=lectura_t(columnas,filas,cascadas,ptablero);
+            user_el=user_el+filas;
+            eliminaciones_f=eliminaciones_f+filas;
             break;
         case 6: salir=true;
             break;
         }
+        eliminacion_f=del_elemento(-1,-1,-1,NULL);
     }
+    //Todo el desarrollo
     delete[]ptablero;
     ptablero=NULL;
+    //Final
     return 0;
 }

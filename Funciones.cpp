@@ -1,11 +1,9 @@
 #include "Llamado.h"
 int relleno(int fila, int columnas, int columna, unsigned char *puntero)
 {
-    int k=0;
-    for(int i=0; i<columna+1;++i){
-        k++;
-    }
-    int valor=(fila+columna*k)%7;
+    static short unsigned int k=0;
+    k++;
+    int valor=(k%7)+1;
     escribir_f(fila,columnas,columna,valor,puntero);
     return 0;
 }
@@ -49,9 +47,11 @@ int escribir_f(unsigned int fila,unsigned int columnas,unsigned int columna, uns
     }
     return 0;
 }
-int lectura_t(int columnas, int filas, unsigned char *puntero)
+int lectura_t(int columnas, int filas, int cascadas, unsigned char *puntero)
 {
     int f_leida=0;
+    int contador=0;
+    contador=contador+cascadas;
     for(int i=0;i<filas;i++){
         int combinacion_h=0;
         int combinacion_v=0;
@@ -60,6 +60,7 @@ int lectura_t(int columnas, int filas, unsigned char *puntero)
             if(f_leida==0){
                 if(i!=0){
                     mover(i,columnas,j,puntero);
+                    return lectura_t(columnas,filas,contador,puntero);
                     continue;
                 }
                 else {
@@ -88,17 +89,21 @@ int lectura_t(int columnas, int filas, unsigned char *puntero)
                 for(int k=i;k<i+combinacion_v;k++){
                     del_elemento(k,columnas,j,puntero);
                 }
+                contador++;
+                return lectura_t(columnas,filas,contador,puntero);
             }
             combinacion_v=0;
             if(combinacion_h>=3){
                 for(int u=j;u<j+combinacion_h;u++){
                     del_elemento(i,columnas,u,puntero);
                 }
+                contador++;
+                return lectura_t(columnas,filas,contador,puntero);
             }
             combinacion_h=0;
         }
     }
-    return 0;
+    return contador;
 }
 int mover(int fila, int columnas, int columna, unsigned char *puntero)
 {
@@ -148,7 +153,7 @@ int ag_columna(int filas, int columnas, int apartir_de_columna, unsigned char *p
                     relleno(i,columnas,j,copia);
                 }
                 else{
-                    int f_leida=lectura_f(i,columnas,j-1,puntero);
+                    int f_leida=lectura_f(i,columnas-1,j-1,puntero);
                     escribir_f(i,columnas,j,f_leida,copia);
                 }
             }
@@ -219,6 +224,11 @@ int del_columna(int filas, int columnas, int columna_eliminda, unsigned char *pu
 }
 int del_elemento(int fila, int columnas, int columna, unsigned char *puntero)
 {
+    static unsigned l=0;
+    if(puntero==nullptr){
+        return l;
+    }
+    l++;
     escribir_f(fila,columnas,columna,0,puntero);
-    return 0;
+    return l;
 }
